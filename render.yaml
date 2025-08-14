@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: vegavip-backend
+    env: node
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    envVars:
+      - key: MONGODB_URI
+        value: "mongodb+srv://pgod8520:<jlLczhHdriHNbiM6>@cluster0.6uyg6xu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
