@@ -153,6 +153,8 @@
     </div>
   </div>
 <script>
+const API_BASE = "https://vegavip-backend.pgod8520.repl.co"; // CHANGE to your real backend URL if needed
+
 function showLogin() { document.getElementById('login-panel').style.display = 'block'; document.getElementById('register-panel').style.display = 'none'; document.getElementById('reset-panel').style.display = 'none'; }
 function showRegister() { document.getElementById('login-panel').style.display = 'none'; document.getElementById('register-panel').style.display = 'block'; document.getElementById('reset-panel').style.display = 'none'; }
 function showReset() { document.getElementById('login-panel').style.display = 'none'; document.getElementById('register-panel').style.display = 'none'; document.getElementById('reset-panel').style.display = 'block'; }
@@ -170,7 +172,7 @@ async function doRegister(event) {
   if (pwd !== pwd2) return alert("Passwords do not match");
   if(!document.getElementById('regPrivacy').checked) return alert("Accept privacy");
   try {
-    const res = await fetch('http://localhost:3000/api/register', {
+    const res = await fetch(`${API_BASE}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone, password: pwd, invite })
@@ -194,7 +196,7 @@ async function doLogin(event) {
     const phone = document.getElementById('loginPhone').value;
     const pwd = document.getElementById('loginPassword').value;
     try {
-      const res = await fetch('http://localhost:3000/api/login', {
+      const res = await fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, password: pwd })
@@ -212,7 +214,7 @@ async function doLogin(event) {
     const uid = document.getElementById('loginUID').value;
     const pwd = document.getElementById('loginUIDPassword').value;
     try {
-      const res = await fetch('http://localhost:3000/api/login-uid', {
+      const res = await fetch(`${API_BASE}/api/login-uid`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uid, password: pwd })
@@ -228,6 +230,7 @@ async function doLogin(event) {
     }
   }
 }
+
 async function doResetPassword(event) {
   event.preventDefault();
   const phone = document.getElementById('resetPhone').value;
@@ -235,7 +238,7 @@ async function doResetPassword(event) {
   const newp2 = document.getElementById('resetConfirmPassword').value;
   if(newp !== newp2) return alert("Passwords do not match!");
   try {
-    const res = await fetch('http://localhost:3000/api/reset', {
+    const res = await fetch(`${API_BASE}/api/reset`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone, password: newp })
@@ -251,99 +254,6 @@ async function doResetPassword(event) {
   }
 }
 </script>
-  const API_BASE = "https://vegavip-backend.pgod8520.repl.co";
-
-async function doRegister(event) {
-  event.preventDefault();
-  const phone = document.getElementById('regPhone').value;
-  const pwd = document.getElementById('regPassword').value;
-  const pwd2 = document.getElementById('regPassword2').value;
-  const invite = document.getElementById('inviteCode').value;
-  if (!phone || !pwd) return alert("Enter phone and password");
-  if (pwd !== pwd2) return alert("Passwords do not match");
-  if (!document.getElementById('regPrivacy').checked) return alert("Accept privacy");
-  try {
-    const res = await fetch(`${API_BASE}/api/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, password: pwd, invite })
-    });
-    const data = await res.json();
-    if (data.success) {
-      document.getElementById('uidBox').style.display = 'block';
-      document.getElementById('newUID').textContent = data.uid;
-      alert('Registration successful! Your UID: ' + data.uid);
-    } else {
-      alert(data.error || "Registration failed");
-    }
-  } catch (err) {
-    alert("Network error");
-  }
-}
-
-async function doLogin(event) {
-  event.preventDefault();
-  if (document.getElementById('login-phone').style.display !== "none") {
-    const phone = document.getElementById('loginPhone').value;
-    const pwd = document.getElementById('loginPassword').value;
-    try {
-      const res = await fetch(`${API_BASE}/api/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, password: pwd })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert("Login Success! UID: " + data.uid);
-      } else {
-        alert(data.error || "Invalid credentials!");
-      }
-    } catch (err) {
-      alert("Network error");
-    }
-  } else {
-    const uid = document.getElementById('loginUID').value;
-    const pwd = document.getElementById('loginUIDPassword').value;
-    try {
-      const res = await fetch(`${API_BASE}/api/login-uid`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uid, password: pwd })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert("Login Success! UID: " + data.uid);
-      } else {
-        alert(data.error || "Invalid credentials!");
-      }
-    } catch (err) {
-      alert("Network error");
-    }
-  }
-}
-
-async function doResetPassword(event) {
-  event.preventDefault();
-  const phone = document.getElementById('resetPhone').value;
-  const newp = document.getElementById('resetNewPassword').value;
-  const newp2 = document.getElementById('resetConfirmPassword').value;
-  if (newp !== newp2) return alert("Passwords do not match!");
-  try {
-    const res = await fetch(`${API_BASE}/api/reset`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, password: newp })
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("Password reset success!");
-    } else {
-      alert(data.error || "Error resetting password!");
-    }
-  } catch (err) {
-    alert("Network error");
-  }
-}
-</script>
 </body>
 </html>
+
