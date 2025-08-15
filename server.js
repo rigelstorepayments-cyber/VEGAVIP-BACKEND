@@ -86,8 +86,9 @@ app.post('/api/reset', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message || 'Reset failed.' });
   }
-});
-
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000/');
+});
+app.get('/', (req, res) => {
+  res.send('VEGA VIP backend running!');
 });
